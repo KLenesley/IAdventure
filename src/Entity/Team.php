@@ -35,6 +35,10 @@ class Team implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTime $creation_date = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Game $game = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -124,6 +128,18 @@ class Team implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreationDate(\DateTime $creation_date): static
     {
         $this->creation_date = $creation_date;
+
+        return $this;
+    }
+
+    public function getGame(): ?Game
+    {
+        return $this->game;
+    }
+
+    public function setGame(Game $game): static
+    {
+        $this->game = $game;
 
         return $this;
     }

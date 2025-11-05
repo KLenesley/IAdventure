@@ -1,11 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Team{% endblock %}
+{% block title %}Créer une équipe{% endblock %}
 
 {% block body %}
-    <h1>Create new Team</h1>
+    <main class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-6">
+                <div class="landing-card">
+                    <h1 class="h3 mb-3">Créer une nouvelle équipe</h1>
+                    <p class="landing-muted mb-4">Choisissez un nom d'équipe et un mot de passe pour permettre à votre groupe de se connecter.</p>
 
-    {{ include('team/_form.html.twig') }}
+                    {{ include('team/_form.html.twig', {'button_label': 'Créer l\'équipe'}) }}
 
-    <a href="{{ path('app_team_index') }}">back to list</a>
+                    <div class="mt-4 text-center">
+                        <a class="link-light text-decoration-none" href="{{ path('app_team_index') }}">← Retour à la gestion des équipes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Game;
 use App\Entity\Team;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -18,12 +19,18 @@ class TeamFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $t1 = new Team();
-        $t1->setUsername('Les bests');
-        $t1->setPassword('team123');
-        $t1->setRoles(['ROLE_USER']);
-        $t1->setCreationDate(new \DateTime('now'));
-        $manager->persist($t1);
+        $game = (new Game())
+            ->setFinished(false)
+            ->setStartDate(new \DateTime('now'));
+
+        $team = new Team();
+        $team->setUsername('LesBests');
+        $team->setRoles(['ROLE_USER']);
+        $team->setCreationDate(new \DateTime('now'));
+        $team->setPassword($this->hasher->hashPassword($team, 'team123'));
+        $team->setGame($game);
+
+        $manager->persist($team);
 
         $manager->flush();
     }

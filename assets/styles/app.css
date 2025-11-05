@@ -1,3 +1,94 @@
+:root {
+    --ia-body-bg: linear-gradient(180deg, #040d21 0%, #0b2349 60%, #061531 100%);
+    --ia-card-bg: rgba(13, 24, 49, 0.85);
+    --ia-border: rgba(255, 255, 255, 0.1);
+    --ia-primary: #735fff;
+    --ia-accent: #0bd7b5;
+    --ia-text: #f4f8ff;
+    --ia-muted: rgba(244, 248, 255, 0.7);
+}
+
 body {
-    background-color: skyblue;
+    min-height: 100vh;
+    margin: 0;
+    background: var(--ia-body-bg);
+    color: var(--ia-text);
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+a {
+    color: inherit;
+}
+
+header .navbar {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+}
+
+header .navbar .navbar-brand,
+header .navbar .nav-link,
+header .navbar .dropdown-item {
+    color: var(--ia-text);
+}
+
+header .navbar .nav-link:hover,
+header .navbar .nav-link:focus,
+header .navbar .dropdown-item:hover,
+header .navbar .dropdown-item:focus {
+    color: var(--ia-accent);
+}
+
+header .navbar .dropdown-menu {
+    background: rgba(13, 24, 49, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+.landing-card {
+    background: var(--ia-card-bg);
+    border: 1px solid var(--ia-border);
+    border-radius: 1.5rem;
+    padding: clamp(2.5rem, 5vw, 3.5rem);
+    box-shadow: 0 22px 60px rgba(4, 13, 33, 0.55);
+}
+
+.landing-card .btn-primary {
+    background: linear-gradient(135deg, var(--ia-primary), var(--ia-accent));
+    border: none;
+    box-shadow: 0 1.25rem 2.5rem rgba(115, 95, 255, 0.35);
+}
+
+.landing-card .btn-outline-light:hover {
+    color: #101836;
+    background-color: #f4f8ff;
+}
+
+.landing-form-control {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--ia-text);
+}
+
+.landing-form-control:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(115, 95, 255, 0.65);
+    box-shadow: 0 0 0 0.25rem rgba(115, 95, 255, 0.2);
+    color: var(--ia-text);
+}
+
+.landing-muted {
+    color: var(--ia-muted) !important;
+}
+
+.landing-divider {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }

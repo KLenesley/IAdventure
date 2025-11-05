@@ -1,20 +1,79 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}Bienvenue sur IAdventure{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <main class="min-vh-100 d-flex align-items-center py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-7">
+                    <div class="landing-card">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div class="alert alert-success bg-opacity-75 border-0 text-start mb-4">
+                                <strong>Content de vous revoir, {{ app.user.userIdentifier }}.</strong>
+                                <div class="small landing-muted">
+                                    Choisissez votre prochaine aventure ou gérez votre équipe depuis ici.
+                                </div>
+                            </div>
+                        {% endif %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                        <div class="text-center mb-4">
+                            <h1 class="display-5 fw-bold mb-3">Forgez votre aventure</h1>
+                            <p class="lead landing-muted mb-0">
+                                Rassemblez votre équipe, plongez dans l'aventure et relevez les défis IA qui vous attendent.
+                            </p>
+                        </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/lenesley/Documents/Symfony/TP-Symfony-User/src/Controller/DefaultController.php</code></li>
-        <li>Your template at <code>C:/Users/lenesley/Documents/Symfony/TP-Symfony-User/templates/default/index.html.twig</code></li>
-    </ul>
-</div>
+                        <p class="text-center text-white-50 text-uppercase small landing-divider mb-4">Continuer en tant qu'équipe</p>
+
+                        <form method="post" action="{{ path('app_login', {'context': 'team'}) }}" class="needs-validation" novalidate>
+                            <div class="mb-3">
+                                <label for="landing_team" class="form-label text-white-50 text-uppercase small">Nom de l'équipe</label>
+                                <input
+                                    id="landing_team"
+                                    name="_username"
+                                    type="text"
+                                    class="form-control form-control-lg landing-form-control"
+                                    value="{{ app.session.get('_security.last_username')|default('') }}"
+                                    autocomplete="username"
+                                    required
+                                >
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="landing_password" class="form-label text-white-50 text-uppercase small">Mot de passe</label>
+                                <input
+                                    id="landing_password"
+                                    name="_password"
+                                    type="password"
+                                    class="form-control form-control-lg landing-form-control"
+                                    autocomplete="current-password"
+                                    required
+                                >
+                            </div>
+
+                            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Se connecter en tant qu'équipe</button>
+
+                            <p class="text-center landing-muted mb-0">
+                                Besoin d'une nouvelle équipe ? <a class="link-light text-decoration-none fw-semibold" href="{{ path('app_team_new') }}">Créer une équipe</a>
+                            </p>
+                        </form>
+
+                        <p class="text-center text-white-50 text-uppercase small landing-divider my-4">ou continuer en tant qu'utilisateur</p>
+
+                        <div class="d-grid gap-2 gap-sm-3 d-sm-flex justify-content-sm-center">
+                            <a class="btn btn-primary btn-lg px-4" href="{{ path('app_register') }}">
+                                Créer un compte
+                            </a>
+                            <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_login') }}">
+                                Se connecter en tant qu'utilisateur
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

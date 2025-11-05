@@ -1,4 +1,27 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'row g-4'}}) }}
+    <div class="col-12">
+        {{ form_row(form.username, {
+            label: "Nom de l'équipe",
+            attr: {
+                class: 'form-control form-control-lg landing-form-control'
+            },
+            label_attr: {
+                class: 'form-label text-white-50 text-uppercase small'
+            }
+        }) }}
+    </div>
+    <div class="col-12">
+        {{ form_row(form.password, {
+            label: 'Mot de passe',
+            attr: {
+                class: 'form-control form-control-lg landing-form-control'
+            },
+            label_attr: {
+                class: 'form-label text-white-50 text-uppercase small'
+            }
+        }) }}
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary w-100">{{ button_label|default('Enregistrer') }}</button>
+    </div>
 {{ form_end(form) }}

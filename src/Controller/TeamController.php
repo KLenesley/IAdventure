@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
 use App\Entity\Team;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
@@ -10,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/team')]
 final class TeamController extends AbstractController
@@ -24,16 +26,28 @@ final class TeamController extends AbstractController
     }
 
     #[Route('/new', name: 'app_team_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $team = new Team();
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = (string) $form->get('password')->getData();
+
+            if ($plainPassword !== '') {
+                $team->setPassword($passwordHasher->hashPassword($team, $plainPassword));
+            }
+
             if ($team->getCreationDate() === null) {
                 $team->setCreationDate(new \DateTime());
             }
+
+            $game = (new Game())
+                ->setFinished(false)
+                ->setStartDate(new \DateTime());
+
+            $team->setGame($game);
             $entityManager->persist($team);
             $entityManager->flush();
 
