@@ -51,7 +51,7 @@ final class TeamController extends AbstractController
             $entityManager->persist($team);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_default', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('team/new.html.twig', [
