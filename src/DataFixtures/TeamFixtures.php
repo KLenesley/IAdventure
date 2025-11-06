@@ -28,6 +28,8 @@ class TeamFixtures extends Fixture
         $team->setRoles(['ROLE_USER']);
         $team->setCreationDate(new \DateTime('now'));
         $team->setPassword($this->hasher->hashPassword($team, 'team123'));
+        $team->setPosition(0);
+        $team->setCurrentEnigma(0);
         $team->setGame($game);
 
         $manager->persist($team);

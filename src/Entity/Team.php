@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TeamRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -38,6 +39,15 @@ class Team implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Game $game = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $position = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $current_enigma = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $note = null;
 
     public function getId(): ?int
     {
@@ -140,6 +150,42 @@ class Team implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGame(Game $game): static
     {
         $this->game = $game;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getCurrentEnigma(): ?int
+    {
+        return $this->current_enigma;
+    }
+
+    public function setCurrentEnigma(int $current_enigma): static
+    {
+        $this->current_enigma = $current_enigma;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): static
+    {
+        $this->note = $note;
 
         return $this;
     }
