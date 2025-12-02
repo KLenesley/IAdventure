@@ -85,7 +85,8 @@ class PlayController extends AbstractController
         Game $game,
         int $teamSessionId,
         TeamSessionRepository $teamSessionRepository,
-        EnigmaRepository $enigmaRepository
+        EnigmaRepository $enigmaRepository,
+        EntityManagerInterface $entityManager
     ): Response {
         $teamSession = $teamSessionRepository->find($teamSessionId);
         
@@ -108,6 +109,9 @@ class PlayController extends AbstractController
         if (!$currentEnigma && !empty($enigmas)) {
             $currentEnigma = $enigmas[0];
             $teamSession->setCurrentEnigmaOrder($currentEnigma->getOrder());
+            
+            // Persist the change
+            $entityManager->flush();
         }
 
         return $this->render('play/game.html.twig', [
@@ -158,7 +162,8 @@ class PlayController extends AbstractController
         $progress->setTeamSession($teamSession);
         $progress->setEnigma($currentEnigma);
         
-        if (strtolower(trim($answer)) === strtolower(trim($currentEnigma->getSecretCode()))) {
+        // Compare secret codes (case-sensitive for security)
+        if (trim($answer) === trim($currentEnigma->getSecretCode())) {
             // Correct answer
             $progress->setAction('completed');
             $progress->setDetails('Code correct: ' . $answer);

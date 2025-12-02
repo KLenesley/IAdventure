@@ -21,9 +21,9 @@ class TeamType extends AbstractType
             ])
             ->add('avatar', EntityType::class, [
                 'class' => Avatar::class,
-                'choice_label' => 'filename',
                 'label' => 'Avatar',
                 'required' => false,
+                'placeholder' => 'Choisir un avatar',
                 'attr' => ['class' => 'form-control']
             ])
         ;

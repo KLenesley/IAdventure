@@ -33,4 +33,10 @@ class Avatar
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        // Display a friendly name by removing the file extension
+        return pathinfo($this->filename, PATHINFO_FILENAME);
+    }
 }
