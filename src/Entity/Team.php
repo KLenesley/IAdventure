@@ -3,127 +3,95 @@
 namespace App\Entity;
 
 use App\Repository\TeamRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
-#[ORM\Table(name:"tbl_team")]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-class Team implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\Table(name: 'tbl_team')]
+class Team
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
-    private ?string $username = null;
-
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
-    private array $roles = [];
-
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
     #[ORM\Column]
-    private ?\DateTime $creation_date = null;
+    private ?int $position = 0;
+
+    #[ORM\Column]
+    private ?int $currentEnigma = 0;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $note = null;
+
+    #[ORM\ManyToOne(targetEntity: Avatar::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Avatar $avatar = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getName(): ?string
     {
-        return $this->username;
+        return $this->name;
     }
 
-    public function setUsername(string $username): static
+    public function setName(string $name): static
     {
-        $this->username = $username;
+        $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
+    public function getPosition(): ?int
     {
-        return (string) $this->username;
+        return $this->position;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
+    public function setPosition(int $position): static
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
+        $this->position = $position;
 
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): ?string
+    public function getCurrentEnigma(): ?int
     {
-        return $this->password;
+        return $this->currentEnigma;
     }
 
-    public function setPassword(string $password): static
+    public function setCurrentEnigma(int $currentEnigma): static
     {
-        $this->password = $password;
+        $this->currentEnigma = $currentEnigma;
 
         return $this;
     }
 
-    /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
-     */
-    public function __serialize(): array
+    public function getNote(): ?string
     {
-        $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-
-        return $data;
+        return $this->note;
     }
 
-    #[\Deprecated]
-    public function eraseCredentials(): void
+    public function setNote(?string $note): static
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
+        $this->note = $note;
+
+        return $this;
     }
 
-    public function getCreationDate(): ?\DateTime
+    public function getAvatar(): ?Avatar
     {
-        return $this->creation_date;
+        return $this->avatar;
     }
 
-    public function setCreationDate(\DateTime $creation_date): static
+    public function setAvatar(?Avatar $avatar): static
     {
-        $this->creation_date = $creation_date;
+        $this->avatar = $avatar;
 
         return $this;
     }
