@@ -1,0 +1,29 @@
+{% extends 'base-blank.html.twig' %}
+
+{% block title %}{{ game.title }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4">{{ game.title }}</h1>
+            
+            {% if game.welcomeImg %}
+                <img src="{{ game.welcomeImg }}" class="img-fluid my-4" alt="{{ game.title }}" style="max-height: 400px;">
+            {% endif %}
+            
+            {% if game.welcomeMsg %}
+                <div class="lead my-4">
+                    {{ game.welcomeMsg|nl2br }}
+                </div>
+            {% endif %}
+            
+            <div class="mt-5">
+                <a href="{{ path('app_play_game_join', {'id': game.id}) }}" class="btn btn-primary btn-lg">
+                    🎮 Commencer l'aventure
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

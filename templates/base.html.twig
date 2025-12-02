@@ -27,6 +27,14 @@
 							<li class="nav-item">
 								<a class="nav-link active" aria-current="page" href="/">Home</a>
 							</li>
+							{% if is_granted('ROLE_PROF') %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('app_game_index') }}">Mes Jeux</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('app_dashboard') }}">Tableau de bord</a>
+							</li>
+							{% endif %}
 							{% if is_granted('ROLE_ADMIN') %}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

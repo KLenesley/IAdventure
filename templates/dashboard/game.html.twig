@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suivi du jeu - {{ game.title }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Suivi du jeu: {{ game.title }}</h1>
+        <a href="{{ path('app_game_show', {'id': game.id}) }}" class="btn btn-secondary">Retour au jeu</a>
+    </div>
+
+    <h3 class="mt-4">Sessions actives</h3>
+    
+    {% if gameSessions is empty %}
+        <div class="alert alert-info">
+            Aucune session active pour le moment.
+        </div>
+    {% else %}
+        {% for gameSession in gameSessions %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>Session #{{ gameSession.id }}</strong> - 
+                    Démarrée le {{ gameSession.startedAt|date('d/m/Y à H:i') }}
+                </div>
+                <div class="card-body">
+                    <h5>Équipes participantes</h5>
+                    
+                    {% if gameSession.teamSessions is empty %}
+                        <p class="text-muted">Aucune équipe n'a rejoint cette session</p>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Équipe</th>
+                                        <th>Énigme actuelle</th>
+                                        <th>Statut</th>
+                                        <th>Début</th>
+                                        <th>Fin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for teamSession in gameSession.teamSessions %}
+                                        <tr>
+                                            <td>{{ teamSession.team.name }}</td>
+                                            <td>Énigme {{ teamSession.currentEnigmaOrder }}</td>
+                                            <td>
+                                                {% if teamSession.status == 'completed' %}
+                                                    <span class="badge bg-success">Terminé</span>
+                                                {% else %}
+                                                    <span class="badge bg-primary">En cours</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ teamSession.startedAt|date('H:i') }}</td>
+                                            <td>{{ teamSession.completedAt ? teamSession.completedAt|date('H:i') : '-' }}</td>
+                                        </tr>
+                                        
+                                        <!-- Show progress timeline -->
+                                        {% if teamSession.progress is not empty %}
+                                            <tr>
+                                                <td colspan="5">
+                                                    <div class="ps-4">
+                                                        <small class="text-muted">Timeline:</small>
+                                                        <ul class="list-unstyled">
+                                                            {% for progress in teamSession.progress %}
+                                                                <li class="small">
+                                                                    <span class="text-muted">{{ progress.timestamp|date('H:i:s') }}</span> - 
+                                                                    {{ progress.enigma.title }}: 
+                                                                    {% if progress.action == 'completed' %}
+                                                                        <span class="text-success">✓ Réussi</span>
+                                                                    {% else %}
+                                                                        <span class="text-danger">✗ Échec</span>
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

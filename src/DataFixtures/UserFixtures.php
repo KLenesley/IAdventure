@@ -22,24 +22,28 @@ class UserFixtures extends Fixture
         $user->setEmail('user@gmail.com');
         $user->setPassword($this->hasher->hashPassword($user, 'user'));
         $user->setRoles(['ROLE_USER']);
+        $user->setIsVerified(true);
         $manager->persist($user);
 
         $prof = new User();
         $prof->setEmail('prof@gmail.com');
         $prof->setRoles(['ROLE_PROF']);
         $prof->setPassword($this->hasher->hashPassword($prof, 'prof'));
+        $prof->setIsVerified(true);
         $manager->persist($prof);
 
         $admin = new User();
         $admin->setEmail('admin@gmail.com');
         $admin->setPassword($this->hasher->hashPassword($admin, 'admin'));
         $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setIsVerified(true);
         $manager->persist($admin);
 
         $superAdmin = new User();
         $superAdmin->setEmail('s-admin@gmail.com');
         $superAdmin->setPassword($this->hasher->hashPassword($superAdmin, 's-admin'));
         $superAdmin->setRoles(['ROLE_SUPER_ADMIN']);
+        $superAdmin->setIsVerified(true);
         $manager->persist($superAdmin);
 
         $manager->flush();

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Jeux{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Mes Jeux</h1>
+        <a href="{{ path('app_game_new') }}" class="btn btn-primary">Créer un nouveau jeu</a>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {% if games is empty %}
+        <div class="alert alert-info">
+            Vous n'avez pas encore créé de jeu. Commencez par en créer un !
+        </div>
+    {% else %}
+        <div class="row">
+            {% for game in games %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        {% if game.welcomeImg %}
+                            <img src="{{ game.welcomeImg }}" class="card-img-top" alt="{{ game.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ game.title }}</h5>
+                            <p class="card-text">{{ game.welcomeMsg|slice(0, 100) }}{% if game.welcomeMsg|length > 100 %}...{% endif %}</p>
+                            <div class="d-flex gap-2">
+                                <a href="{{ path('app_game_show', {'id': game.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                                <a href="{{ path('app_game_edit', {'id': game.id}) }}" class="btn btn-sm btn-warning">Éditer</a>
+                                <a href="{{ path('app_enigma_index', {'gameId': game.id}) }}" class="btn btn-sm btn-secondary">Énigmes</a>
+                                <a href="{{ path('app_dashboard_game', {'id': game.id}) }}" class="btn btn-sm btn-success">Suivre</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base-blank.html.twig' %}
+
+{% block title %}{{ game.title }} - En jeu{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h3>{{ game.title }}</h3>
+                    <p class="text-muted mb-0">Équipe: {{ teamSession.team.name }}</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-primary">Énigme {{ currentEnigma ? currentEnigma.order : 0 }} / {{ enigmas|length }}</span>
+                </div>
+            </div>
+
+            <!-- Flash Messages -->
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+            
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+
+            {% if teamSession.status == 'completed' %}
+                <!-- Game Completed -->
+                <div class="text-center py-5">
+                    <h1 class="display-3">🎉 Félicitations ! 🎉</h1>
+                    <p class="lead">Vous avez terminé le jeu avec succès !</p>
+                    <p>Temps total: {{ teamSession.startedAt|date('H:i') }} - {{ teamSession.completedAt|date('H:i') }}</p>
+                </div>
+            {% elseif currentEnigma %}
+                <!-- Current Enigma -->
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">{{ currentEnigma.title }}</h4>
+                        <small>Type: {{ currentEnigma.type.label }}</small>
+                    </div>
+                    <div class="card-body">
+                        {% if currentEnigma.instruction %}
+                            <div class="mb-4">
+                                {{ currentEnigma.instruction|nl2br }}
+                            </div>
+                        {% endif %}
+
+                        <!-- Answer Form -->
+                        <form method="post" action="{{ path('app_play_check', {'id': game.id, 'teamSessionId': teamSession.id}) }}">
+                            <div class="mb-3">
+                                <label for="answer" class="form-label">Votre réponse (code secret):</label>
+                                <input type="text" class="form-control form-control-lg" id="answer" name="answer" required autofocus>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success btn-lg">Valider</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Progress -->
+                <div class="mt-4">
+                    <h5>Progression</h5>
+                    <div class="progress" style="height: 30px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             style="width: {{ (currentEnigma.order / enigmas|length * 100)|round }}%"
+                             aria-valuenow="{{ currentEnigma.order }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="{{ enigmas|length }}">
+                            {{ currentEnigma.order }} / {{ enigmas|length }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    Aucune énigme disponible pour le moment.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

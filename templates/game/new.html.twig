@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un jeu{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Créer un nouveau jeu</h1>
+
+    {{ form_start(form, {'attr': {'class': 'mt-4'}}) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.welcomeMsg) }}
+        {{ form_row(form.welcomeImg) }}
+        
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Créer</button>
+            <a href="{{ path('app_game_index') }}" class="btn btn-secondary">Annuler</a>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

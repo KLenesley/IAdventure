@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Énigmes - {{ game.title }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Énigmes - {{ game.title }}</h1>
+        <div>
+            <a href="{{ path('app_enigma_new', {'gameId': game.id}) }}" class="btn btn-primary">Ajouter une énigme</a>
+            <a href="{{ path('app_game_show', {'id': game.id}) }}" class="btn btn-secondary">Retour au jeu</a>
+        </div>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {% if enigmas is empty %}
+        <div class="alert alert-info">
+            Aucune énigme pour ce jeu. Ajoutez-en une !
+        </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Ordre</th>
+                        <th>Titre</th>
+                        <th>Type</th>
+                        <th>Code secret</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for enigma in enigmas %}
+                        <tr>
+                            <td>{{ enigma.order }}</td>
+                            <td>{{ enigma.title }}</td>
+                            <td>{{ enigma.type.label }}</td>
+                            <td>{{ enigma.secretCode }}</td>
+                            <td>
+                                <a href="{{ path('app_enigma_edit', {'gameId': game.id, 'id': enigma.id}) }}" class="btn btn-sm btn-warning">Éditer</a>
+                                <form method="post" action="{{ path('app_enigma_delete', {'gameId': game.id, 'id': enigma.id}) }}" onsubmit="return confirm('Supprimer cette énigme ?');" style="display: inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ enigma.id) }}">
+                                    <button class="btn btn-sm btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
