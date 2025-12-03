@@ -8,6 +8,7 @@ use App\Form\EnigmaType;
 use App\Repository\EnigmaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class EnigmaController extends AbstractController
 {
     #[Route('/', name: 'app_enigma_index', methods: ['GET'])]
-    public function index(int $gameId, Game $game, EnigmaRepository $enigmaRepository): Response
+    public function index(int $gameId, #[MapEntity(id: 'gameId')] Game $game, EnigmaRepository $enigmaRepository): Response
     {
         $this->denyAccessUnlessGranted('view', $game);
         
@@ -31,7 +32,7 @@ class EnigmaController extends AbstractController
     }
 
     #[Route('/new', name: 'app_enigma_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, int $gameId, Game $game, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, int $gameId, #[MapEntity(id: 'gameId')] Game $game, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('edit', $game);
         
@@ -57,7 +58,7 @@ class EnigmaController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_enigma_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, int $gameId, Game $game, Enigma $enigma, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, int $gameId, #[MapEntity(id: 'gameId')] Game $game, Enigma $enigma, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('edit', $game);
         
@@ -79,7 +80,7 @@ class EnigmaController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_enigma_delete', methods: ['POST'])]
-    public function delete(Request $request, int $gameId, Game $game, Enigma $enigma, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, int $gameId, #[MapEntity(id: 'gameId')] Game $game, Enigma $enigma, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('delete', $game);
         
