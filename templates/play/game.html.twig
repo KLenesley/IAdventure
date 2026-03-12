@@ -35,7 +35,7 @@
             {% if teamSession.status == 'completed' %}
                 <!-- Game Completed -->
                 <div class="text-center py-5">
-                    <h1 class="display-3">🎉 Félicitations ! 🎉</h1>
+                    <h1 class="display-3">Félicitations</h1>
                     <p class="lead">Vous avez terminé le jeu avec succès !</p>
                     <p>Temps total: {{ teamSession.startedAt|date('H:i') }} - {{ teamSession.completedAt|date('H:i') }}</p>
                 </div>
