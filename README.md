@@ -14,7 +14,7 @@ IAdventure propose des ateliers informatiques pour des petits groupes de 10 à 1
 - **Énigmes personnalisables** : Création et gestion de différents types d'énigmes
 - **Historique complet** : Consultation de l'historique des parties jouées
 
-## 🚀 Installation
+## Installation
 
 ### Prérequis
 
@@ -42,23 +42,18 @@ cp .env .env.local
 # Éditer .env.local si nécessaire
 ```
 
-4. **Démarrer la base de données MariaDB**
-```bash
-docker compose up -d database
-```
-
-5. **Créer la base de données et exécuter les migrations**
+4. **Créer la base de données et exécuter les migrations**
 ```bash
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 ```
 
-6. **Charger les données initiales (fixtures)**
+5. **Charger les données initiales (fixtures)**
 ```bash
 php bin/console doctrine:fixtures:load
 ```
 
-7. **Démarrer le serveur de développement**
+6. **Démarrer le serveur de développement**
 ```bash
 symfony server:start
 # ou
@@ -69,7 +64,7 @@ php -S localhost:8000 -t public
 - URL principale : http://localhost:8000
 - Interface professeur : http://localhost:8000/teacher/game
 
-## 👥 Comptes de test
+## Comptes de test
 
 Après avoir chargé les fixtures, les comptes suivants sont disponibles :
 
@@ -79,7 +74,7 @@ Après avoir chargé les fixtures, les comptes suivants sont disponibles :
 | admin@gmail.com | admin | Administrateur |
 | s-admin@gmail.com | s-admin | Super Administrateur |
 
-## 📚 Structure du projet
+## Structure du projet
 
 ### Entités principales
 
@@ -104,7 +99,7 @@ Après avoir chargé les fixtures, les comptes suivants sont disponibles :
 - **SecurityController** : Authentification
 - **UserController** : Gestion des utilisateurs (admin)
 
-## 🎮 Utilisation
+## Utilisation
 
 ### Pour les enseignants
 
@@ -121,7 +116,7 @@ Après avoir chargé les fixtures, les comptes suivants sont disponibles :
 3. **Résoudre les énigmes** en entrant les codes secrets
 4. **Progresser** jusqu'à la fin du jeu
 
-## 🔧 Configuration
+## Configuration
 
 ### Base de données
 
@@ -138,7 +133,7 @@ La configuration de sécurité dans `config/packages/security.yaml` :
 - `/teacher` : Requiert `ROLE_PROF`
 - `/user` : Requiert `ROLE_ADMIN`
 
-## 📊 Types d'énigmes disponibles
+## Types d'énigmes disponibles
 
 Par défaut, les types suivants sont créés :
 - QCM (Questionnaire à choix multiples)
@@ -152,7 +147,7 @@ Par défaut, les types suivants sont créés :
 - Vrai/Faux
 - Code (Code à trouver)
 
-## 🛠️ Développement
+## Développement
 
 ### Commandes utiles
 
@@ -160,28 +155,10 @@ Par défaut, les types suivants sont créés :
 # Vider le cache
 php bin/console cache:clear
 
-# Créer une nouvelle migration
-php bin/console doctrine:migrations:diff
-
-# Vérifier la syntaxe des fichiers Twig
-php bin/console lint:twig templates/
-
 # Lister toutes les routes
 php bin/console debug:router
 ```
 
-## 📝 Licence
-
-Ce projet est sous licence propriétaire.
-
-## 👨‍💻 Auteur
-
-KLenesley
-
-## 🤝 Contribution
+## Contribution
 
 Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou une pull request.
-
-## 📞 Support
-
-Pour toute question ou problème, veuillez ouvrir une issue sur GitHub.
